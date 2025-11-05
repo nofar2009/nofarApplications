@@ -1,11 +1,12 @@
 package com.katza.nofarapplication;
 
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnHide, btnShow;
     ImageView imageView;
     int randomNumber; // מספר אקראי שהמשתמש צריך לנחש
+    private Switch k;
+    private SeekBar h; // הגדרת ה-SeekBar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +47,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initViews() {
         imageView = findViewById(R.id.imageView);
+        k = findViewById(R.id.k);
+        h = findViewById(R.id.h); // קישור ל-SeekBar
+
+        // קובע את רמת השקיפות (alpha) לפי מיקום ה־SeekBar
+        h.setMax(100);
+        h.setProgress(100);
+
+        h.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float alphaValue = progress / 100f; // המרת הערך ל-alph בין 0 ל-1
+                imageView.setAlpha(alphaValue); // עדכון השקיפות של התמונה
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(MainActivity.this, "התחלת להזיז את הבר", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(MainActivity.this, "שחררת את הבר", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        k.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                Toast.makeText(this, "Image visible", Toast.LENGTH_SHORT).show();
+                imageView.setVisibility(View.VISIBLE);  // מציג את התמונה
+            } else {
+                Toast.makeText(this, "Image invisible", Toast.LENGTH_SHORT).show();
+                imageView.setVisibility(View.INVISIBLE);  // מחביא את התמונה
+            }
+        });
 
         btnHide = findViewById(R.id.buttonHide);
-        btnHide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnHide.setOnClickListener(v -> imageView.setVisibility(View.INVISIBLE));
 
-                imageView.setVisibility(View.INVISIBLE);
-            }
-        });
         btnShow = findViewById(R.id.buttonShow);
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                imageView.setVisibility(View.VISIBLE);  //
-            }
-        });
+        btnShow.setOnClickListener(v -> imageView.setVisibility(View.VISIBLE));
     }
 
     // פונקציות להראות ולהסתיר את התמונה
@@ -94,7 +120,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v) {
-
-    }
+    public void onClick(View v) {}
 }
