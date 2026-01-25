@@ -13,7 +13,7 @@
         android:theme="@style/Theme.NofarApplication">
 
         <activity
-            android:name=".Activityfisrt"
+            android:name=".cameraActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,21 +22,28 @@
         </activity>
 
         <activity
+            android:name=".Activityfisrt"
+            android:exported="false" />
+
+        <activity
             android:name=".Activitysecend"
             android:exported="false" />
 
         <activity
             android:name=".DialogActivity"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity3"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity2"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-    </application>
 
+    </application>
 </manifest>
