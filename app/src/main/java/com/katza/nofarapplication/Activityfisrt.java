@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +19,15 @@ public class Activityfisrt extends AppCompatActivity {
     // הגדרת ה-Launcher שמחכה לתוצאה מהעמוד השני
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK) { // בדיקה שהכל עבר בהצלחה [cite: 14, 15]
-                    Intent data = result.getData();
-                    if (data != null) {
-                        int age = data.getIntExtra("age", 0); // קבלת הגיל המחושב [cite: 18]
-                        tvAgeDisplay.setText("גיל מחושב: " + age); // עדכון הטקסט במסך הראשון [cite: 19, 53]
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) { // בדיקה שהכל עבר בהצלחה [cite: 14, 15]
+                        Intent data = result.getData();
+                        if (data != null) {
+                            int age = data.getIntExtra("age", 0); // קבלת הגיל המחושב [cite: 18]
+                            tvAgeDisplay.setText("גיל מחושב: " + age); // עדכון הטקסט במסך הראשון [cite: 19, 53]
+                        }
                     }
                 }
             }
